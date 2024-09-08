@@ -1,0 +1,16 @@
+Sketchfab_Scene
+PickUpMachine.jsx:15 Sketchfab_model
+PickUpMachine.jsx:15 root
+PickUpMachine.jsx:15 GLTF_SceneRootNode
+PickUpMachine.jsx:15 Base_5
+PickUpMachine.jsx:15 Object_4
+PickUpMachine.jsx:15 Arm_1_4
+PickUpMachine.jsx:15 Object_6
+PickUpMachine.jsx:15 Arm_2_3
+PickUpMachine.jsx:15 Object_8
+PickUpMachine.jsx:15 Wrist_2
+PickUpMachine.jsx:15 Object_10
+PickUpMachine.jsx:15 Claw_1_0
+PickUpMachine.jsx:15 Object_12
+PickUpMachine.jsx:15 Claw_2_1
+PickUpMachine.jsx:15 Object_14
