@@ -15,7 +15,7 @@ router.post('/publish', (req, res) => {
     });
 });
 
-// New specific endpoint for setting rotation speed
+// Specific endpoint for setting rotation speed
 router.post('/setRotationSpeed', (req, res) => {
     const { speed } = req.body; // Expecting a numeric speed value in the request body
     const topic = 'unity/control/rotationSpeed'; // Fixed MQTT topic for rotation speed
@@ -23,11 +23,28 @@ router.post('/setRotationSpeed', (req, res) => {
     console.log(`Attempting to publish speed: ${speed}`);
     mqttClient.publish(topic, message, (err) => {
         if (err) {
-            console.error("Failed to publish message", err);
+            console.error("Failed to publish rotation speed", err);
             res.status(500).send("Failed to publish rotation speed");
         } else {
-            console.log("Message published successfully");
+            console.log("Rotation speed published successfully");
             res.send("Rotation speed updated successfully");
+        }
+    });
+});
+
+// New specific endpoint for setting hinge speed
+router.post('/setHingeSpeed', (req, res) => {
+    const { speed } = req.body; // Expecting a numeric speed value in the request body
+    const topic = 'unity/control/hingeSpeed'; // Fixed MQTT topic for hinge speed
+    const message = speed.toString(); // Convert speed to string for MQTT message
+    console.log(`Attempting to publish hinge speed: ${speed}`);
+    mqttClient.publish(topic, message, (err) => {
+        if (err) {
+            console.error("Failed to publish hinge speed", err);
+            res.status(500).send("Failed to publish hinge speed");
+        } else {
+            console.log("Hinge speed published successfully");
+            res.send("Hinge speed updated successfully");
         }
     });
 });

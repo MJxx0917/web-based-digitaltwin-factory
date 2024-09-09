@@ -11,7 +11,6 @@ app.use(express.urlencoded({ extended: true }));
 // Import routes
 const digitaltwins = require('./routes/digitaltwin');
 const mqttPublish = require('./routes/mqttPublish');
-const websocketServer = require('./services/websocketServer');
 
 // Use routes
 app.use('/digitaltwin', digitaltwins);
@@ -42,15 +41,6 @@ mqttClient.on('connect', () => {
 
 mqttClient.on('message', (topic, message) => {
     console.log(`Received message from ${topic}: ${message.toString()}`);
-});
-
-// Handle WebSocket upgrades
-server.on('upgrade', (request, socket, head) => {
-    console.log('Upgrading to WebSockets...');
-    websocketServer.handleUpgrade(request, socket, head, (ws) => {
-        console.log('WebSocket upgrade successful');
-        websocketServer.emit('connection', ws, request);
-    });
 });
 
 // Start the server
