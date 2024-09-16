@@ -3,18 +3,26 @@ const http = require('http');
 const app = express();
 const port = 3000;
 const server = http.createServer(app);
+const cors = require('cors');
 
 // Middleware to parse JSON and URL-encoded data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5173' // This should match your React app's URL
+}));
 
 // Import routes
 const digitaltwins = require('./routes/digitaltwin');
-const mqttPublish = require('./routes/mqttPublish');
+const rotationRoutes = require('./routes/rotation');
+const MqttHandler = require('./services/mqttService');
+const mqttHandler = new MqttHandler();
+mqttHandler.connect();
 
 // Use routes
 app.use('/digitaltwin', digitaltwins);
-app.use('/mqtt', mqttPublish);  // This includes your new endpoint
+app.use('/rotation', rotationRoutes);
 
 // Import the database configuration
 const db = require('./config/db');
@@ -24,24 +32,6 @@ db.info().then((info) => {
   console.log('Database connected:', info);
 });
 
-// Import the MQTT client configuration
-const mqttClient = require('./config/mqttClient');
-
-// MQTT client connection and event handling
-mqttClient.on('connect', () => {
-    console.log('MQTT Client Connected');
-    mqttClient.subscribe('unity/control/rotationSpeed', (err) => {
-        if (err) {
-            console.log('Subscription error:', err);
-        } else {
-            console.log('Subscribed to topic: unity/control/rotationSpeed');
-        }
-    });
-});
-
-mqttClient.on('message', (topic, message) => {
-    console.log(`Received message from ${topic}: ${message.toString()}`);
-});
 
 // Start the server
 server.listen(port, () => console.log(`Server listening on http://localhost:${port}`));
